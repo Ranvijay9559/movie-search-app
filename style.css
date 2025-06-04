@@ -7,8 +7,8 @@
 }
 
 body {
-  background: #0f0f0f;
-  color: #fff;
+  background: #2f2f2f; /* medium dark gray */
+  color: #e0e0e0; /* soft off-white */
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -34,22 +34,30 @@ body {
   border-radius: 6px;
   font-size: 16px;
   outline: none;
+  background-color: #444; /* medium gray input background */
+  color: #eee; /* light text */
+  transition: background-color 0.3s ease;
+}
+
+#moviename-input:focus {
+  background-color: #555;
 }
 
 #search-btn {
   padding: 10px 20px;
   margin-left: 10px;
-  background-color: #ff3c38;
+  background-color: #5c8df6; /* muted blue */
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
   transition: background 0.3s ease;
+  box-shadow: 0 3px 6px rgba(92,141,246,0.4);
 }
 
 #search-btn:hover {
-  background-color: #e7332f;
+  background-color: #4476e6; /* slightly darker blue */
 }
 
 #result-container {
@@ -61,10 +69,10 @@ body {
 
 /* Movie Cards */
 .movie-card {
-  background: #1e1e1e;
+  background: #3a3a3a; /* medium gray */
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   transition: transform 0.3s ease;
 }
 
@@ -84,4 +92,5 @@ body {
   font-weight: bold;
   font-size: 15px;
   text-align: center;
+  color: #f0f0f0;
 }

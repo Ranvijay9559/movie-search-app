@@ -6,6 +6,13 @@ const api = MOVIE_SEARCH_API;
 
 searchBtn.addEventListener("click", handleSearch);
 
+movieNameInput.addEventListener("keydown", (e) => {
+  if(e.key === "Enter") {
+    e.preventDefault();
+    handleSearch();
+  }
+});
+
 function handleSearch() {
   resultContainer.innerHTML = "";
 
@@ -25,7 +32,8 @@ function handleSearch() {
   .then(data => {
     if(data.Response === "True"){
       data.Search.forEach(movie => {
-        const poster = movie.Poster;
+        const poster = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300x445?text=No+Image";
+
         const title = movie.Title;
 
         const movieCard = document.createElement("div");
@@ -43,4 +51,7 @@ function handleSearch() {
       resultContainer.innerHTML = "<p>No Result Found.</p>"
     }
   })
+  .catch(error => {
+    resultContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+  });
 }
