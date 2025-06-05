@@ -62,6 +62,25 @@ body {
   background-color: #4476e6;
 }
 
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-left-color: #5c8df6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  /* Centering */
+  margin: 20px auto;
+  display: block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Suggestion Container */
 #suggestion-container {
   position: absolute;

@@ -2,6 +2,7 @@ const movieNameInput = document.getElementById("moviename-input");
 const searchBtn = document.getElementById("search-btn");
 const resultContainer = document.getElementById("result-container");
 const suggestionContainer = document.getElementById("suggestion-container");
+const loading = document.getElementById("loading");
 
 const api = MOVIE_SEARCH_API;
 
@@ -14,6 +15,12 @@ function handleSuggestion() {
   const movieName = movieNameInput.value.trim();
 
   const url = `https://www.omdbapi.com/?apikey=${api}&s=${movieName}`;
+
+  loading.style.display = "block";
+  if(movieName === ""){
+    loading.style.display = "none";
+    return;
+  }
 
   fetch(url)
   .then(response => response.json())
@@ -32,10 +39,15 @@ function handleSuggestion() {
         const title = document.createElement("p");
         title.textContent = movie.Title;
 
-        movieSuggestion.appendChild(img);
-        movieSuggestion.appendChild(title);
-        suggestionContainer.appendChild(movieSuggestion);
+        img.onload = () => {
+          movieSuggestion.appendChild(img);
+          movieSuggestion.appendChild(title);
+          suggestionContainer.appendChild(movieSuggestion);
+          loading.style.display = "none";
+        };
       });
+    } else {
+      loading.style.display = "none";
     }
   })
 }
@@ -50,6 +62,7 @@ movieNameInput.addEventListener("keydown", (e) => {
 function handleSearch() {
   resultContainer.innerHTML = "";
   suggestionContainer.innerHTML = "";
+  loading.style.display = "block";
 
   const movieName = movieNameInput.value.trim();
 
@@ -59,6 +72,7 @@ function handleSearch() {
   }
 
   const url = `https://www.omdbapi.com/?apikey=${api}&s=${movieName}`;
+
 
   fetch(url)
   .then(
@@ -77,14 +91,17 @@ function handleSearch() {
 
         movieCard.appendChild(img);
         movieCard.appendChild(title);
+        loading.style.display = "none";
         resultContainer.appendChild(movieCard);
       })
     } else {
       resultContainer.innerHTML = "<p>No Result Found.</p>"
+      loading.style.display = "none";
     }
   })
   .catch(error => {
     resultContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
+    loading.style.display = "none";
   });
 }
 
