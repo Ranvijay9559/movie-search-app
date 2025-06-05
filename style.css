@@ -7,8 +7,8 @@
 }
 
 body {
-  background: #2f2f2f; /* medium dark gray */
-  color: #e0e0e0; /* soft off-white */
+  background: #2f2f2f;
+  color: #e0e0e0;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -20,10 +20,12 @@ body {
   width: 100%;
   max-width: 900px;
   text-align: center;
+  position: relative;
 }
 
 #search-container {
   margin-bottom: 30px;
+  position: relative;
 }
 
 #moviename-input {
@@ -34,8 +36,8 @@ body {
   border-radius: 6px;
   font-size: 16px;
   outline: none;
-  background-color: #444; /* medium gray input background */
-  color: #eee; /* light text */
+  background-color: #444;
+  color: #eee;
   transition: background-color 0.3s ease;
 }
 
@@ -46,7 +48,7 @@ body {
 #search-btn {
   padding: 10px 20px;
   margin-left: 10px;
-  background-color: #5c8df6; /* muted blue */
+  background-color: #5c8df6;
   color: white;
   border: none;
   border-radius: 6px;
@@ -57,9 +59,58 @@ body {
 }
 
 #search-btn:hover {
-  background-color: #4476e6; /* slightly darker blue */
+  background-color: #4476e6;
 }
 
+/* Suggestion Container */
+#suggestion-container {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  max-width: 400px;
+  background: #3a3a3a;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  max-height: 300px;
+  z-index: 10;
+}
+
+.movie-suggestion {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #555;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.movie-suggestion:last-child {
+  border-bottom: none;
+}
+
+.movie-suggestion:hover {
+  background-color: #505050;
+}
+
+.movie-suggestion img {
+  width: 40px;
+  height: 60px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.movie-suggestion p {
+  margin: 0;
+  color: #f0f0f0;
+  font-size: 14px;
+  text-align: left;
+}
+
+/* Result Grid */
 #result-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -69,7 +120,7 @@ body {
 
 /* Movie Cards */
 .movie-card {
-  background: #3a3a3a; /* medium gray */
+  background: #3a3a3a;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -93,4 +144,14 @@ body {
   font-size: 15px;
   text-align: center;
   color: #f0f0f0;
+}
+
+/* Scrollbar Styling */
+#suggestion-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+#suggestion-container::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
 }
