@@ -6,8 +6,20 @@ const loading = document.getElementById("loading");
 
 const api = MOVIE_SEARCH_API;
 
-movieNameInput.addEventListener("input", handleSuggestion);
+movieNameInput.addEventListener("input", debounce(handleSuggestion, 400));
+
 searchBtn.addEventListener("click", handleSearch);
+
+function debounce(func, delay) {
+  let timeoutId;
+  return function(...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
 
 function handleSuggestion() {
   suggestionContainer.innerHTML = "";
