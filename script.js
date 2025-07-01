@@ -3,9 +3,12 @@ const searchBtn = document.getElementById("search-btn");
 const resultContainer = document.getElementById("result-container");
 const suggestionContainer = document.getElementById("suggestion-container");
 const loading = document.getElementById("loading");
-const resultHeader = document.getElementById("result-header")
+const resultHeader = document.getElementById("result-header");
+const pageContainer = document.getElementById("page-container");
 
 const api = MOVIE_SEARCH_API;
+let currentPage = 1;
+let currentSearchTerm = "";
 
 loadTrending();
 
@@ -79,51 +82,62 @@ function handleSearch() {
   suggestionContainer.innerHTML = "";
   loading.style.display = "block";
 
-  const movieName = movieNameInput.value.trim();
+  currentPage = 1;
+  currentSearchTerm = movieNameInput.value.trim();
 
-  if(!movieName){
+  if (!currentSearchTerm) {
     resultContainer.innerHTML = "<p>Please Enter a Movie Name.</p>";
+    loading.style.display = "none";
     return;
   }
 
   suggestionContainer.style.display = "none";
 
   resultHeader.innerHTML = `
-    <h2 style="text-align: center; margin-bottom: 20px;">Your Searched: ${movieName}</h2>
+    <h2 style="text-align: center; margin-bottom: 20px;">You Searched: ${currentSearchTerm}</h2>
   `;
 
-  const url = `https://www.omdbapi.com/?apikey=${api}&s=${movieName}`;
+  fetchMovies(currentSearchTerm, currentPage)
+    .then(data => {
+      if (data.Response === "True") {
+        data.Search.forEach(movie => {
+          const img = fetchImage(movie);
 
+          const movieCard = document.createElement("div");
+          movieCard.classList.add("movie-card");
 
-  fetch(url)
-  .then(
-    response => response.json()
-  )
-  .then(data => {
-    if(data.Response === "True"){
-      data.Search.forEach(movie => {
-        const img = fetchImage(movie);
+          const title = document.createElement("p");
+          title.textContent = movie.Title;
 
-        const movieCard = document.createElement("div");
-        movieCard.classList.add("movie-card");
-        
-        const title = document.createElement("p");
-        title.textContent = movie.Title;
+          movieCard.appendChild(img);
+          movieCard.appendChild(title);
+          resultContainer.appendChild(movieCard);
+        });
 
-        movieCard.appendChild(img);
-        movieCard.appendChild(title);
+        // Only show "Load More" if there are more than 10 results
+        if (parseInt(data.totalResults) > 10) {
+          const loadButton = document.createElement("button");
+          loadButton.textContent = "Load More";
+          loadButton.classList.add("load-more-btn");
+          loadButton.addEventListener("click", handleLoadMore);
+          pageContainer.appendChild(loadButton);
+        }
+
         loading.style.display = "none";
-        resultContainer.appendChild(movieCard);
-      })
-    } else {
-      resultContainer.innerHTML = "<p>No Result Found.</p>"
+      } else {
+        resultContainer.innerHTML = "<p>No Result Found.</p>";
+        loading.style.display = "none";
+      }
+    })
+    .catch(error => {
+      resultContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
       loading.style.display = "none";
-    }
-  })
-  .catch(error => {
-    resultContainer.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
-    loading.style.display = "none";
-  });
+    });
+}
+
+function fetchMovies(term, page) {
+  const url = `https://www.omdbapi.com/?apikey=${api}&s=${term}&page=${page}`;
+  return fetch(url).then(res => res.json());
 }
 
 function fetchImage(movie) {
@@ -137,6 +151,52 @@ function fetchImage(movie) {
 
   return img;
 }
+
+function handleLoadMore() {
+  currentPage++;
+  loading.style.display = "block";
+
+  fetchMovies(currentSearchTerm, currentPage)
+    .then(data => {
+      if (data.Response === "True") {
+        const loadMoreBtn = document.querySelector(".load-more-btn");
+        if (loadMoreBtn) loadMoreBtn.remove();
+
+        data.Search.forEach(movie => {
+          const img = fetchImage(movie);
+
+          const movieCard = document.createElement("div");
+          movieCard.classList.add("movie-card");
+
+          const title = document.createElement("p");
+          title.textContent = movie.Title;
+
+          movieCard.appendChild(img);
+          movieCard.appendChild(title);
+          resultContainer.appendChild(movieCard);
+        });
+
+        // Check if more pages exist
+        const maxPages = Math.ceil(parseInt(data.totalResults) / 10);
+        if (currentPage < maxPages) {
+          const loadButton = document.createElement("button");
+          loadButton.textContent = "Load More";
+          loadButton.classList.add("load-more-btn");
+          loadButton.addEventListener("click", handleLoadMore);
+          pageContainer.appendChild(loadButton);
+        }
+
+        loading.style.display = "none";
+      } else {
+        loading.style.display = "none";
+      }
+    })
+    .catch(error => {
+      resultContainer.innerHTML += `<p>Error loading more: ${error.message}</p>`;
+      loading.style.display = "none";
+    });
+}
+
 
 function loadTrending() {
   resultContainer.innerHTML = "";

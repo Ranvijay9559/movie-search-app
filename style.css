@@ -175,3 +175,26 @@ margin: 20px auto;
   border-radius: 4px;
 }
 
+.load-more-btn {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 24px;
+  background-color: #5c8df6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(92, 141, 246, 0.3);
+}
+
+.load-more-btn:hover {
+  background-color: #4476e6;
+  transform: translateY(-2px);
+}
+
+.load-more-btn:active {
+  transform: scale(0.98);
+}
