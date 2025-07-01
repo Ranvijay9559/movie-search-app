@@ -8,16 +8,31 @@
 </head>
 <body>
   <div id="main-container">
+    <button id="home-btn" style="display: none;" class="load-more-btn">🏠 Back to Home</button>
+
+    <!-- Search Bar -->
     <div id="search-container">
       <input type="text" placeholder="Enter Movie Name" id="moviename-input">
       <button id="search-btn">Search</button>
     </div>
+
+  <!-- Featured Section -->
+    <section id="featured-section">
+      <h2 class="section-title">Featured Movies 🎬</h2>
+      <div id="featured-container" class="horizontal-scroll"></div>
+    </section>
+
+    <!-- Loader and Suggestions -->
     <div class="spinner" id="loading" style="display: none;"></div>
     <div id="suggestion-container"></div>
+
+    <!-- Search or Trending Results -->
     <div id="result-header"></div>
     <div id="result-container"></div>
+
+    <!-- Pagination Buttons -->
     <div id="page-container"></div>
-  </div>
+</div>
 
   <script src="config.js"></script>
   <script src="script.js"></script>
