@@ -71,7 +71,7 @@ body {
   animation: spin 1s linear infinite;
 
   /* Centering */
-  margin: 20px auto;
+margin: 20px auto;
   display: block;
 }
 
@@ -174,3 +174,4 @@ body {
   background: #666;
   border-radius: 4px;
 }
+
